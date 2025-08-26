@@ -10,6 +10,12 @@ src/models/
 *.pt
 *.bin
 
+# overlay policy: ignore full src except whitelisted paths
+src/**
+!src/requirements.txt
+!src/custom_nodes/**
+!src/user/**
+
 # OS/editor junk
 .DS_Store
 Thumbs.db
