@@ -1,0 +1,17 @@
+/.venv/
+comfyui.out
+comfyui.pid
+**/__pycache__/
+
+# models and large binaries (kept outside VCS)
+src/models/
+*.safetensors
+*.ckpt
+*.pt
+*.bin
+
+# OS/editor junk
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
