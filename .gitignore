@@ -10,11 +10,11 @@ src/models/
 *.pt
 *.bin
 
-# overlay policy: ignore full src except whitelisted paths
-src/**
-!src/requirements.txt
-!src/custom_nodes/**
-!src/user/**
+# subtree policy: track src/ fully to allow upstream merges
+# Keep large model binaries out of VCS via src/models/ and file patterns above.
+
+# backup Git directories inside src
+src/.git.bak-*/
 
 # OS/editor junk
 .DS_Store
