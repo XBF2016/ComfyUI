@@ -10,3 +10,5 @@ trigger: always_on
 export http_proxy="http://172.16.104.138:33210"
 export https_proxy="http://172.16.104.138:33210"
 ```
+
+5、模型下载到 src/models/下 ，自定义节点下载到  src/custom_nodes
