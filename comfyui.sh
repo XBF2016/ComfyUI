@@ -20,6 +20,11 @@ HOST="0.0.0.0"
 PORT="8188"
 EXTRA_ARGS=""
 
+# Scoped proxy (only for ComfyUI process tree)
+# You can override via environment before calling this script: PROXY_URL, NO_PROXY
+PROXY_URL="${PROXY_URL-http://172.16.104.138:33210}"
+NO_PROXY="${NO_PROXY-localhost,127.0.0.1,::1}"
+
 usage() {
   cat <<EOF
 ComfyUI service manager
@@ -108,7 +113,16 @@ cmd_start() {
     exit 0
   fi
   echo "[INFO] Starting ComfyUI on ${HOST}:${PORT} ..."
-  nohup "${PY}" "${MAIN}" --listen "${HOST}" --port "${PORT}" ${EXTRA_ARGS} >"${LOGFILE}" 2>&1 &
+  # Inject HTTP/HTTPS proxy only for this process and its children
+  nohup env \
+    PATH="${ROOT}/.venv/bin:${PATH}" \
+    HTTP_PROXY="${PROXY_URL}" \
+    HTTPS_PROXY="${PROXY_URL}" \
+    http_proxy="${PROXY_URL}" \
+    https_proxy="${PROXY_URL}" \
+    NO_PROXY="${NO_PROXY}" \
+    no_proxy="${NO_PROXY}" \
+    "${PY}" "${MAIN}" --listen "${HOST}" --port "${PORT}" ${EXTRA_ARGS} >"${LOGFILE}" 2>&1 &
   echo $! > "${PIDFILE}"
   sleep 2
   if pid=$(is_running); then
